@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Weather.DataAccess;
 using Weather.Dto;
 using Weather.Models;
 using Weather.Services;
@@ -24,27 +23,22 @@ namespace Weather.Controllers
         private readonly ILogger<WeatherForecastController> _logger;
         private readonly IWeatherForecastService _weatherForecastService;
 
-        //private readonly IQueryProcessor QueryProcessor;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherForecastService weatherForecastService /*, IQueryProcessor queryProcessor*/)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IWeatherForecastService weatherForecastService)
         {
             _logger = logger;
             _weatherForecastService = weatherForecastService;
-            //QueryProcessor = queryProcessor;
         }
 
         /// <summary>
         /// Get list of weather forecasts
         /// </summary>
-        /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get(
-            /*[FromQuery] FetchWeatherForecastQuery query*/)
+        public async Task<ActionResult<IEnumerable<WeatherForecast>>> Get()
         {
             _logger.LogInformation("Fetching weather forecasts");
 
-            var entities = await _weatherForecastService.GetWeatherForecastAsync(); //await QueryProcessor.ProcessAsync(query);
+            var entities = await _weatherForecastService.GetWeatherForecastAsync();
 
             _logger.LogInformation("Returning weather forecasts");
 
