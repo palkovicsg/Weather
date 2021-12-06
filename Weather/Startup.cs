@@ -1,16 +1,15 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Weather.Data;
+using Weather.DbContexts;
 using Weather.Models;
+using Weather.Services;
 
 namespace Weather
 {
@@ -37,6 +36,10 @@ namespace Weather
 
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+
+            services.AddSingleton<WeatherForecastDbContext>();
+            services.AddTransient<IWeatherForecastService, GetWeatherForecastService>();
+            services.AddTransient<WeatherForecastImportService>();
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
